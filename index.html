@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Puan Sistemi</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .score {
+            font-size: 2em;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Puan Sistemi</h1>
+        <p class="score">Puanınız: <span id="score">0</span></p>
+        <button id="increaseScoreButton">Puanı Artır</button>
+    </div>
+    <script>
+        async function fetchScore() {
+            try {
+                const response = await fetch('/score');
+                const data = await response.json();
+                document.getElementById('score').innerText = data.score;
+            } catch (error) {
+                console.error('Error fetching score:', error);
+            }
+        }
+
+        async function increaseScore() {
+            try {
+                const response = await fetch('/increase-score', { method: 'POST' });
+                const data = await response.json();
+                document.getElementById('score').innerText = data.newScore;
+            } catch (error) {
+                console.error('Error increasing score:', error);
+            }
+        }
+
+        document.getElementById('increaseScoreButton').addEventListener('click', increaseScore);
+
+        // Initial fetch of score
+        fetchScore();
+    </script>
+</body>
+</html>
